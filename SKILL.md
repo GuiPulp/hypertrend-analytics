@@ -51,7 +51,53 @@ mv hypertrend-analytics ~/.openclaw/skills/hypertrend-analytics
 # 3. 完成！
 ```
 
-## ⚙️ 配置
+## ⚠️ API 连接状态
+
+### 当前状态
+
+| 组件 | 状态 | 说明 |
+|------|:----:|------|
+| **API 文档** | ✅ 完整 | 所有接口已文档化 |
+| **API 客户端** | ✅ 就绪 | Python + Shell 实现 |
+| **API 服务** | ⚠️ 待确认 | `http://192.144.239.66/api` |
+
+### 连接测试
+
+如果 API 服务暂时不可用，技能会自动使用**模拟数据**演示功能。
+
+**测试 API 连接：**
+```bash
+# 方法1: 使用测试脚本
+cd ~/.openclaw/skills/hypertrend-analytics
+./scripts/fetch_data.sh test
+
+# 方法2: 直接 curl
+curl -X POST http://192.144.239.66/api/apps/master \
+  -H "Content-Type: application/json" \
+  -d '{"page": 1, "page_size": 5, "type": "week"}'
+```
+
+**可能的问题：**
+- 🔴 连接超时 - API 服务暂时不可用
+- 🔴 连接重置 - 网络问题或防火墙
+- 🟡 需要 VPN - 服务器在内网环境
+- 🟡 服务迁移 - API 地址可能已更改
+
+### 降级方案
+
+当 API 不可用时，技能会：
+1. 显示**模拟数据**（格式与真实数据一致）
+2. 提示用户当前为演示模式
+3. 继续展示功能流程
+
+### 获取帮助
+
+如果 API 连接有问题：
+1. 联系 HyperTrend 官方确认 API 状态
+2. 检查是否需要更新 API 地址
+3. 确认网络环境和防火墙设置
+
+---
 
 ### API 配置（必需）
 
