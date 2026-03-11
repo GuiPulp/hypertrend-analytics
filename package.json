@@ -1,7 +1,7 @@
 {
   "name": "hypertrend-analytics",
-  "version": "2.4.0",
-  "description": "HyperTrend 链上信用分析 + Hyperliquid 地址分析 + 自动跟单系统 + 榜单排名 + 平台跟单 + 地址监控",
+  "version": "2.5.0",
+  "description": "HyperTrend 链上信用分析 + Hyperliquid 地址分析 + 自动跟单系统 + 榜单排名 + 平台跟单 + 地址监控 + 真实API集成",
   "author": "HyperTrend Team",
   "license": "MIT",
   "keywords": [
@@ -13,29 +13,34 @@
     "analytics",
     "copytrading",
     "leaderboard",
-    "defi"
+    "defi",
+    "api"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/hypertrend-analytics"
+    "url": "https://github.com/GuiPulp/hypertrend-analytics"
   },
   "bugs": {
-    "url": "https://github.com/your-username/hypertrend-analytics/issues"
+    "url": "https://github.com/GuiPulp/hypertrend-analytics/issues"
   },
   "homepage": "https://www.hypertrend.top/",
+  "api": {
+    "base_url": "http://192.144.239.66/api",
+    "version": "v1"
+  },
   "openclaw": {
     "minVersion": "1.0.0",
     "skillsPath": "~/.openclaw/skills/",
     "category": "finance",
-    "tags": ["crypto", "trading", "analytics", "copytrading", "leaderboard"]
+    "tags": ["crypto", "trading", "analytics", "copytrading", "leaderboard", "api"]
   },
   "dependencies": {
     "apis": [
       {
         "name": "HyperTrend API",
-        "url": "https://api.hypertrend.top/v1/",
-        "auth": "optional",
-        "docs": "https://docs.hypertrend.top/api"
+        "url": "http://192.144.239.66/api",
+        "auth": "jwt",
+        "docs": "https://github.com/GuiPulp/hypertrend-analytics/blob/main/API_CLIENT.md"
       },
       {
         "name": "Hyperliquid API",
@@ -51,14 +56,17 @@
     "leaderboard": true,
     "platform_copytrading": true,
     "address_monitoring": true,
+    "api_integration": true,
     "whale_monitoring": true,
     "tweet_generation": true
   },
   "config": {
     "env": [
-      "HYPERTREND_API_KEY",
+      "HYPERTREND_API_URL",
+      "HYPERTREND_API_TOKEN",
+      "HYPERTREND_WALLET_ADDRESS",
+      "HYPERTREND_API_SIGNATURE",
       "HYPERTREND_TRADING_ENABLED",
-      "HYPERTREND_PRIVATE_KEY",
       "HYPERTREND_ALERT_TELEGRAM",
       "HYPERTREND_ALERT_DISCORD",
       "HYPERTREND_WHALE_THRESHOLD",

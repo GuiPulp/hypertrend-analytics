@@ -1,11 +1,12 @@
 ---
 name: hypertrend-analytics
-description: HyperTrend 链上信用分析 + Hyperliquid 地址分析 + 自动跟单系统 + 榜单排名 + 地址监控。查询引力指数、六芒星评分、分析HL地址、监控鲸鱼、自动跟单、榜单追踪、实时监控。
-version: 2.4.0
+description: HyperTrend 链上信用分析 + Hyperliquid 地址分析 + 自动跟单系统 + 榜单排名 + 地址监控 + 真实API集成。基于HyperTrend官方API，提供实时数据查询和交易操作。
+version: 2.5.0
 author: HyperTrend Team
 homepage: https://www.hypertrend.top/
-repository: https://github.com/hypertrend/hypertrend-analytics-skill
+repository: https://github.com/GuiPulp/hypertrend-analytics
 license: MIT
+api_base_url: http://192.144.239.66/api
 ---
 
 # HyperTrend Analytics
@@ -16,6 +17,7 @@ license: MIT
 
 | 功能 | 描述 | 状态 |
 |------|------|:----:|
+| **🆕 真实API集成** | 基于HyperTrend官方API | ✅ v2.5.0 |
 | **引力指数查询** | HyperTrend六芒星信用评分 | ✅ |
 | **HL地址分析** | 持仓、杠杆、盈亏分析 | ✅ |
 | **鲸鱼监控** | >$500K大仓位追踪 | ✅ |
@@ -25,7 +27,7 @@ license: MIT
 | **榜单系统** | 引力/收益/胜率/带单榜单 | ✅ v2.2.0 |
 | **变化追踪** | 榜单排名变化监控 | ✅ v2.2.0 |
 | **平台跟单** | HyperTrend平台直接跟单交易 | ✅ v2.3.0 |
-| **🆕 地址监控** | 实时追踪地址操作和资金 | ✅ v2.4.0 |
+| **地址监控** | 实时追踪地址操作和资金 | ✅ v2.4.0 |
 | **风险控制** | 多层风控保护本金 | ✅ |
 | **收益追踪** | 实时统计跟单表现 | ✅ |
 
@@ -34,14 +36,14 @@ license: MIT
 ### 快速安装 (推荐)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/your-username/hypertrend-analytics/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/GuiPulp/hypertrend-analytics/main/scripts/install.sh | bash
 ```
 
 ### 手动安装
 
 ```bash
 # 1. 克隆仓库
-git clone https://github.com/your-username/hypertrend-analytics.git
+git clone https://github.com/GuiPulp/hypertrend-analytics.git
 
 # 2. 移动到技能目录
 mv hypertrend-analytics ~/.openclaw/skills/hypertrend-analytics
@@ -51,17 +53,71 @@ mv hypertrend-analytics ~/.openclaw/skills/hypertrend-analytics
 
 ## ⚙️ 配置
 
-### 环境变量 (可选)
+### API 配置（必需）
 
 ```bash
 # ~/.bashrc 或 ~/.zshrc
 
-# HyperTrend API Key (如需私有数据)
-export HYPERTREND_API_KEY="your_key"
+# HyperTrend API 基础URL
+export HYPERTREND_API_URL="http://192.144.239.66/api"
 
-# 跟单系统配置 (如需自动跟单)
+# 认证Token（登录后获取）
+export HYPERTREND_API_TOKEN="your_jwt_token"
+
+# 或者使用钱包地址+签名（可选）
+export HYPERTREND_WALLET_ADDRESS="0x..."
+export HYPERTREND_API_SIGNATURE="0x..."
+```
+
+### 获取 API Token
+
+1. **发送验证码**
+   ```bash
+   curl -X POST http://192.144.239.66/api/base/send/smscode \
+     -H "Content-Type: application/json" \
+     -d '{"contact": "your@email.com", "sms_type": "register"}'
+   ```
+
+2. **注册**
+   ```bash
+   curl -X POST http://192.144.239.66/api/base/register \
+     -H "Content-Type: application/json" \
+     -d '{
+       "wallet_address": "0x...",
+       "contact": "your@email.com",
+       "sms_code": "123456",
+       "invite_code": "xxx"
+     }'
+   ```
+
+3. **获取 Nonce**
+   ```bash
+   curl -X POST http://192.144.239.66/api/base/usernonce \
+     -H "Content-Type: application/json" \
+     -d '{"wallet_address": "0x..."}'
+   ```
+
+4. **登录（使用钱包签名）**
+   ```bash
+   curl -X POST http://192.144.239.66/api/base/login \
+     -H "Content-Type: application/json" \
+     -d '{
+       "wallet_address": "0x...",
+       "signature": "0x...",
+       "nonce": "123456"
+     }'
+   ```
+
+5. **保存返回的 Token**
+   ```bash
+   export HYPERTREND_API_TOKEN="返回的jwt_token"
+   ```
+
+### 可选配置
+
+```bash
+# 跟单系统配置
 export HYPERTREND_TRADING_ENABLED="true"
-export HYPERTREND_PRIVATE_KEY="your_wallet_private_key"
 
 # 通知设置
 export HYPERTREND_ALERT_TELEGRAM="chat_id"
