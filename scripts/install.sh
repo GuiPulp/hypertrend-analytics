@@ -38,11 +38,11 @@ mkdir -p "$SKILL_DIR"
 echo "⬇️ 下载技能文件..."
 if command -v curl &> /dev/null; then
     curl -fsSL \
-        https://raw.githubusercontent.com/hypertrend/hypertrend-analytics-skill/main/SKILL.md \
+        https://raw.githubusercontent.com/GuiPulp/hypertrend-analytics/main/SKILL.md \
         -o "$SKILL_DIR/SKILL.md"
 elif command -v wget &> /dev/null; then
     wget -q \
-        https://raw.githubusercontent.com/hypertrend/hypertrend-analytics-skill/main/SKILL.md \
+        https://raw.githubusercontent.com/GuiPulp/hypertrend-analytics/main/SKILL.md \
         -O "$SKILL_DIR/SKILL.md"
 else
     echo -e "${RED}❌ 需要 curl 或 wget${NC}"
