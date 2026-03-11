@@ -1,0 +1,81 @@
+name: Validate Skill
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Check SKILL.md exists
+      run: |
+        if [ ! -f "SKILL.md" ]; then
+          echo "❌ SKILL.md not found"
+          exit 1
+        fi
+        echo "✅ SKILL.md found"
+    
+    - name: Validate SKILL.md structure
+      run: |
+        if ! grep -q "^name:" SKILL.md; then
+          echo "❌ Missing 'name:' in SKILL.md"
+          exit 1
+        fi
+        if ! grep -q "^description:" SKILL.md; then
+          echo "❌ Missing 'description:' in SKILL.md"
+          exit 1
+        fi
+        echo "✅ SKILL.md structure valid"
+    
+    - name: Check package.json
+      run: |
+        if [ ! -f "package.json" ]; then
+          echo "❌ package.json not found"
+          exit 1
+        fi
+        echo "✅ package.json found"
+    
+    - name: Validate JSON files
+      run: |
+        if command -v jq &> /dev/null; then
+          jq empty package.json
+          echo "✅ package.json is valid JSON"
+        else
+          echo "⚠️ jq not installed, skipping JSON validation"
+        fi
+    
+    - name: Check install script
+      run: |
+        if [ ! -f "scripts/install.sh" ]; then
+          echo "❌ install.sh not found"
+          exit 1
+        fi
+        if ! head -1 scripts/install.sh | grep -q "#!/bin/bash"; then
+          echo "❌ install.sh missing shebang"
+          exit 1
+        fi
+        echo "✅ install.sh found and valid"
+    
+    - name: Check examples
+      run: |
+        if [ ! -d "examples" ]; then
+          echo "❌ examples directory not found"
+          exit 1
+        fi
+        echo "✅ examples directory found"
+    
+    - name: Final validation
+      run: |
+        echo ""
+        echo "================================"
+        echo "✅ All validation checks passed!"
+        echo "================================"
+        echo ""
+        echo "📦 Package structure:"
+        find . -type f -not -path './.git/*' | sort

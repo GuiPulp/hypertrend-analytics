@@ -1,0 +1,68 @@
+{
+  "name": "hypertrend-analytics",
+  "version": "2.4.0",
+  "description": "HyperTrend 链上信用分析 + Hyperliquid 地址分析 + 自动跟单系统 + 榜单排名 + 平台跟单 + 地址监控",
+  "author": "HyperTrend Team",
+  "license": "MIT",
+  "keywords": [
+    "hypertrend",
+    "hyperliquid",
+    "on-chain",
+    "credit",
+    "trading",
+    "analytics",
+    "copytrading",
+    "leaderboard",
+    "defi"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/hypertrend-analytics"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/hypertrend-analytics/issues"
+  },
+  "homepage": "https://www.hypertrend.top/",
+  "openclaw": {
+    "minVersion": "1.0.0",
+    "skillsPath": "~/.openclaw/skills/",
+    "category": "finance",
+    "tags": ["crypto", "trading", "analytics", "copytrading", "leaderboard"]
+  },
+  "dependencies": {
+    "apis": [
+      {
+        "name": "HyperTrend API",
+        "url": "https://api.hypertrend.top/v1/",
+        "auth": "optional",
+        "docs": "https://docs.hypertrend.top/api"
+      },
+      {
+        "name": "Hyperliquid API",
+        "url": "https://api.hyperliquid.xyz/info",
+        "auth": "none",
+        "docs": "https://hyperliquid.gitbook.io/hyperliquid-docs/"
+      }
+    ]
+  },
+  "features": {
+    "analytics": true,
+    "copytrading": true,
+    "leaderboard": true,
+    "platform_copytrading": true,
+    "address_monitoring": true,
+    "whale_monitoring": true,
+    "tweet_generation": true
+  },
+  "config": {
+    "env": [
+      "HYPERTREND_API_KEY",
+      "HYPERTREND_TRADING_ENABLED",
+      "HYPERTREND_PRIVATE_KEY",
+      "HYPERTREND_ALERT_TELEGRAM",
+      "HYPERTREND_ALERT_DISCORD",
+      "HYPERTREND_WHALE_THRESHOLD",
+      "HYPERTREND_LIQUIDATION_ALERT"
+    ]
+  }
+}
