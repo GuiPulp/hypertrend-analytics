@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 HyperTrend API 客户端 - 真实数据获取
-基于 http://192.144.239.66/api
+基于 https://app.hypertrend.top/api
 """
 
 import os
@@ -13,14 +13,11 @@ class HyperTrendAPI:
     """HyperTrend API 客户端"""
     
     def __init__(self, base_url: str = None, token: str = None):
-        self.base_url = base_url or os.getenv('HYPERTREND_API_URL', 'http://192.144.239.66/api')
+        self.base_url = base_url or os.getenv('HYPERTREND_API_URL', 'https://app.hypertrend.top/api')
         self.token = token or os.getenv('HYPERTREND_API_TOKEN')
         self.headers = {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'User-Agent': 'HyperTrend-API-Client/1.0'
+            'Content-Type': 'application/json'
         }
-        # Token 是可选的，部分接口可以匿名访问
         if self.token:
             self.headers['Authorization'] = f'Bearer {self.token}'
     
@@ -48,7 +45,7 @@ class HyperTrendAPI:
     
     def get_hothunter(self, page: int = 1, page_size: int = 10, type_: str = "week") -> Dict:
         """获取热点猎杀者榜单"""
-        return self._post('/apps/hothunter', {
+        return self._post('/open/hothunter', {
             'page': page,
             'page_size': page_size,
             'type': type_
@@ -56,7 +53,7 @@ class HyperTrendAPI:
     
     def get_master(self, page: int = 1, page_size: int = 10, type_: str = "week") -> Dict:
         """获取稳健大师榜单"""
-        return self._post('/apps/master', {
+        return self._post('/open/master', {
             'page': page,
             'page_size': page_size,
             'type': type_
@@ -64,7 +61,7 @@ class HyperTrendAPI:
     
     def get_vertex(self, page: int = 1, page_size: int = 10, type_: str = "week") -> Dict:
         """获取量变先锋榜单"""
-        return self._post('/apps/vertex', {
+        return self._post('/open/vertex', {
             'page': page,
             'page_size': page_size,
             'type': type_
@@ -72,7 +69,7 @@ class HyperTrendAPI:
     
     def get_hexagram(self, page: int = 1, page_size: int = 10, type_: str = "week") -> Dict:
         """获取巅峰指数(六芒星)榜单"""
-        return self._post('/apps/hexagram', {
+        return self._post('/open/hexagram', {
             'page': page,
             'page_size': page_size,
             'type': type_
@@ -269,7 +266,7 @@ if __name__ == '__main__':
         sys.exit(1)
     
     print(f"\n✅ API Token 已配置")
-    print(f"🌐 API 地址: http://192.144.239.66/api")
+    print(f"🌐 API 地址: https://app.hypertrend.top/api")
     
     # 测试获取榜单
     print("\n📊 测试获取稳健大师榜单...")
