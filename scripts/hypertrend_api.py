@@ -16,8 +16,11 @@ class HyperTrendAPI:
         self.base_url = base_url or os.getenv('HYPERTREND_API_URL', 'http://192.144.239.66/api')
         self.token = token or os.getenv('HYPERTREND_API_TOKEN')
         self.headers = {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'User-Agent': 'HyperTrend-API-Client/1.0'
         }
+        # Token 是可选的，部分接口可以匿名访问
         if self.token:
             self.headers['Authorization'] = f'Bearer {self.token}'
     
