@@ -1,12 +1,11 @@
 ---
 name: hypertrend-analytics
-description: HyperTrend 链上信用分析 + Hyperliquid 地址分析 + 自动跟单系统 + 榜单排名 + 地址监控 + 真实API集成。基于HyperTrend官方API，提供实时数据查询和交易操作。
+description: HyperTrend 链上信用分析 + Hyperliquid 地址分析 + 自动跟单系统 + 榜单排名 + 地址监控 + 智能风险偏好匹配。查询引力指数、六芒星评分、分析HL地址、监控鲸鱼、自动跟单、榜单追踪、实时监控、智能推荐。
 version: 2.5.0
 author: HyperTrend Team
 homepage: https://www.hypertrend.top/
-repository: https://github.com/GuiPulp/hypertrend-analytics
+repository: https://github.com/hypertrend/hypertrend-analytics-skill
 license: MIT
-api_base_url: http://192.144.239.66/api
 ---
 
 # HyperTrend Analytics
@@ -17,7 +16,6 @@ api_base_url: http://192.144.239.66/api
 
 | 功能 | 描述 | 状态 |
 |------|------|:----:|
-| **🆕 真实API集成** | 基于HyperTrend官方API | ✅ v2.5.0 |
 | **引力指数查询** | HyperTrend六芒星信用评分 | ✅ |
 | **HL地址分析** | 持仓、杠杆、盈亏分析 | ✅ |
 | **鲸鱼监控** | >$500K大仓位追踪 | ✅ |
@@ -28,161 +26,90 @@ api_base_url: http://192.144.239.66/api
 | **变化追踪** | 榜单排名变化监控 | ✅ v2.2.0 |
 | **平台跟单** | HyperTrend平台直接跟单交易 | ✅ v2.3.0 |
 | **地址监控** | 实时追踪地址操作和资金 | ✅ v2.4.0 |
+| **🆕 风险偏好匹配** | 根据用户风险偏好智能推荐交易者 | ✅ v2.5.0 |
 | **风险控制** | 多层风控保护本金 | ✅ |
 | **收益追踪** | 实时统计跟单表现 | ✅ |
 
-## 📊 数据源策略
+## 🆕 v2.5.0 新特性：智能风险偏好匹配
 
-当使用本技能查询数据时，系统会按以下优先级自动选择数据源：
+根据用户的风险偏好，智能匹配并推荐最适合的交易者。
 
-1. **优先使用 HyperTrend API** - 获取榜单排名、信用评分等聚合数据
-2. **自动回退到 Hyperliquid API** - 当 HyperTrend 无数据时，自动查询链上原始数据
+### 风险偏好类型
 
-**输出原则**：
-- 正常回复时不主动说明使用了哪个数据源
-- 仅在用户追问时才告知数据来源
-- 确保用户获得完整、准确的数据分析
+| 类型 | 英文名 | 描述 | 筛选条件 |
+|------|--------|------|---------|
+| **保守型** | conservative | 低风险，追求稳定，回撤<10% | 胜率>60%, 杠杆<5x |
+| **稳健型** | moderate | 中等风险，平衡收益与风险 | 胜率>55%, 杠杆<10x |
+| **进取型** | aggressive | 高风险高收益，追求超额回报 | 胜率>45%, 杠杆<20x |
+| **量化型** | quantitative | 数据驱动，关注交易频率 | 胜率>50%, 最少交易次数 |
 
-**示例**：
+### 使用示例
+
+```bash
+# 命令行使用
+python3 scripts/risk_match.py conservative    # 保守型推荐
+python3 scripts/risk_match.py moderate        # 稳健型推荐
+python3 scripts/risk_match.py aggressive      # 进取型推荐
+python3 scripts/risk_match.py quantitative    # 量化型推荐
 ```
-用户: 查询这个地址的持仓
-AI: 该地址当前持有 BTC 多单 123.84 个，ETH 空单 32.55 个...
 
-用户追问: 数据从哪来的？
-AI: 通过 Hyperliquid 官方 API 获取的链上实时数据
+### OpenClaw 对话使用
+
 ```
+用户: 我是稳健型投资者，帮我推荐几个合适的交易者跟单
+
+AI: 
+🎯 HyperTrend 智能跟单推荐
+📊 风险偏好: 稳健型
+📝 中等风险，平衡收益与风险，最大回撤控制在20%以内
+
+【推荐 #1】匹配度: 93.26/100
+├─ 地址: 0xe117d3d94b30f7e7aa...
+├─ 榜单排名: #24
+├─ 日收益: $7156.40
+├─ 胜率: 100.0%
+├─ 最大回撤: 0.1%
+├─ 预估杠杆: 1.0x
+└─ 💡 推荐理由: 胜率高达 100.0%，稳定性优秀；最大回撤仅 0.1%，风控出色
+
+💰 跟单操作:
+  查看详情: openclaw hypertrend address <地址>
+  开始跟单: openclaw hypertrend copytrade <地址> --amount <金额>
+```
+
+## 📦 安装
 
 ### 快速安装 (推荐)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/GuiPulp/hypertrend-analytics/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/hypertrend/hypertrend-analytics-skill/main/scripts/install.sh | bash
 ```
 
 ### 手动安装
 
 ```bash
 # 1. 克隆仓库
-git clone https://github.com/GuiPulp/hypertrend-analytics.git
+git clone https://github.com/hypertrend/hypertrend-analytics-skill.git
 
 # 2. 移动到技能目录
-mv hypertrend-analytics ~/.openclaw/skills/hypertrend-analytics
+mv hypertrend-analytics-skill ~/.openclaw/skills/hypertrend-analytics
 
 # 3. 完成！
 ```
 
-## ⚠️ API 连接状态
+## ⚙️ 配置
 
-### 当前状态
-
-| 组件 | 状态 | 说明 |
-|------|:----:|------|
-| **API 文档** | ✅ 完整 | 所有接口已文档化 |
-| **API 客户端** | ✅ 就绪 | Python + Shell 实现 |
-| **API 服务** | ⚠️ 待确认 | `http://192.144.239.66/api` |
-
-### 连接测试
-
-如果 API 服务暂时不可用，技能会自动使用**模拟数据**演示功能。
-
-**测试 API 连接：**
-```bash
-# 方法1: 使用测试脚本
-cd ~/.openclaw/skills/hypertrend-analytics
-./scripts/fetch_data.sh test
-
-# 方法2: 直接 curl
-curl -X POST http://192.144.239.66/api/apps/master \
-  -H "Content-Type: application/json" \
-  -d '{"page": 1, "page_size": 5, "type": "week"}'
-```
-
-**可能的问题：**
-- 🔴 连接超时 - API 服务暂时不可用
-- 🔴 连接重置 - 网络问题或防火墙
-- 🟡 需要 VPN - 服务器在内网环境
-- 🟡 服务迁移 - API 地址可能已更改
-
-### 降级方案
-
-当 API 不可用时，技能会：
-1. 显示**模拟数据**（格式与真实数据一致）
-2. 提示用户当前为演示模式
-3. 继续展示功能流程
-
-### 获取帮助
-
-如果 API 连接有问题：
-1. 联系 HyperTrend 官方确认 API 状态
-2. 检查是否需要更新 API 地址
-3. 确认网络环境和防火墙设置
-
----
-
-### API 配置（必需）
+### 环境变量 (可选)
 
 ```bash
 # ~/.bashrc 或 ~/.zshrc
 
-# HyperTrend API 基础URL
-export HYPERTREND_API_URL="http://192.144.239.66/api"
+# HyperTrend API Key (如需私有数据)
+export HYPERTREND_API_KEY="your_key"
 
-# 认证Token（登录后获取）
-export HYPERTREND_API_TOKEN="your_jwt_token"
-
-# 或者使用钱包地址+签名（可选）
-export HYPERTREND_WALLET_ADDRESS="0x..."
-export HYPERTREND_API_SIGNATURE="0x..."
-```
-
-### 获取 API Token
-
-1. **发送验证码**
-   ```bash
-   curl -X POST http://192.144.239.66/api/base/send/smscode \
-     -H "Content-Type: application/json" \
-     -d '{"contact": "your@email.com", "sms_type": "register"}'
-   ```
-
-2. **注册**
-   ```bash
-   curl -X POST http://192.144.239.66/api/base/register \
-     -H "Content-Type: application/json" \
-     -d '{
-       "wallet_address": "0x...",
-       "contact": "your@email.com",
-       "sms_code": "123456",
-       "invite_code": "xxx"
-     }'
-   ```
-
-3. **获取 Nonce**
-   ```bash
-   curl -X POST http://192.144.239.66/api/base/usernonce \
-     -H "Content-Type: application/json" \
-     -d '{"wallet_address": "0x..."}'
-   ```
-
-4. **登录（使用钱包签名）**
-   ```bash
-   curl -X POST http://192.144.239.66/api/base/login \
-     -H "Content-Type: application/json" \
-     -d '{
-       "wallet_address": "0x...",
-       "signature": "0x...",
-       "nonce": "123456"
-     }'
-   ```
-
-5. **保存返回的 Token**
-   ```bash
-   export HYPERTREND_API_TOKEN="返回的jwt_token"
-   ```
-
-### 可选配置
-
-```bash
-# 跟单系统配置
+# 跟单系统配置 (如需自动跟单)
 export HYPERTREND_TRADING_ENABLED="true"
+export HYPERTREND_PRIVATE_KEY="your_wallet_private_key"
 
 # 通知设置
 export HYPERTREND_ALERT_TELEGRAM="chat_id"
@@ -219,7 +146,11 @@ AI输出:
 💡 评估: 风控优秀，适合作为带单参考
 ```
 
-### 场景 2: 监控鲸鱼动态
+### 场景 2: 🆕 智能风险偏好匹配
+
+详见上方 v2.5.0 新特性章节。
+
+### 场景 3: 监控鲸鱼动态
 
 ```
 用户: 查看今日HL鲸鱼动态
@@ -238,265 +169,20 @@ AI输出:
 市场情绪: 62% Long / 38% Short (偏多)
 ```
 
-### 场景 3: 🆕 地址实时监控
+## 📚 API 文档
 
-```
-用户: 监控地址 0x7a3f...9d2e 的所有操作
+详见 [API_DOCUMENTATION.md](./API_DOCUMENTATION.md)
 
-AI输出:
-🔍 地址监控已启动: 0x7a3f...9d2e
+## 🔧 开发计划
 
-监控类型:
-[✓] 仓位变化
-[✓] 交易操作
-[✓] 资金变动
-[✓] 盈利变化
-[✓] 风险预警
-
-检查间隔: 30秒
-通知方式: Telegram + 本对话
-
-当前状态:
-├─ 总仓位: $45,230
-├─ 未实现盈亏: +$2,340 (+5.4%)
-├─ 保证金余额: $12,450
-└─ 爆仓风险: 🟢 安全
-
----
-
-🚨 [实时监控] 15:32:18
-📍 0x7a3f...9d2e | 开仓
-币种: BTC-PERP | 方向: Long
-数量: 0.5 BTC @ $68,450
-杠杆: 10x | 仓位价值: $34,225
-
----
-
-🚨 [实时监控] 16:15:42
-📍 0x7a3f...9d2e | 平仓 (止盈)
-币种: ETH-PERP | 盈利: +$1,350 (+7.0%) 🎉
-
----
-
-⚠️ [风险预警] 18:45:23
-📍 0x7a3f...9d2e | 爆仓风险
-币种: SOL-PERP | 爆仓距离: 3.3% 🔴
-建议: 减仓或追加保证金
-```
-
-### 场景 4: 榜单查询
-
-```
-用户: 查看引力指数榜 top10
-
-AI输出:
-🏆 HyperTrend 引力指数榜 (实时)
-
-🥇 1. 0x7a3f...9d2e
-   引力指数: 982/1000 (大师级⭐⭐⭐⭐⭐)
-   六芒星: 风控182 | 胜率190 | 杠杆142
-   24h变化: +3位 ↑
-
-🥈 2. 0x9c1b...4f8a
-   引力指数: 965/1000 (大师级)
-   24h变化: -1位 ↓
-
-🥉 3. 0x3d2e...8b5c
-   引力指数: 958/1000 (大师级)
-   24h变化: 新晋榜单 🆕
-
-📈 榜单动态: 新晋3个 | 跌出3个
-```
-
-### 场景 5: 平台跟单交易
-
-```
-用户: 连接我的 HyperTrend 账户
-
-AI输出:
-🔗 HyperTrend 账户绑定 (钱包签名)
-
-Step 1: 访问 https://www.hypertrend.top/
-Step 2: 连接钱包并生成签名
-Step 3: 输入钱包地址和签名
-
-✅ 账户绑定成功！
-钱包: 0x7a3f...9d2e
-余额: $12,450.00
-签名有效期: 7天
-
-开始跟单?
-├─ 🥇 交易宗师 (引力982, +156%)
-├─ 🥈 稳健大师 (引力921, 回撤5%)
-└─ 🥉 波段高手 (引力876)
-
-确认开始? (y/n)
-```
-
-### 场景 6: 自动跟单系统
-
-```
-用户: 启动自动跟单，使用稳健策略
-
-AI输出:
-🤖 HyperTrend 自动跟单系统启动
-
-策略: 稳健收益 (Conservative)
-筛选条件:
-├─ 引力指数 ≥ 800
-├─ 胜率 ≥ 70%
-└─ 最大杠杆 ≤ 8x
-
-✅ 发现 3 个符合条件的交易者
-总收益: +$170 (+7.08%)
-```
-
-## 🔌 核心工具
-
-### 分析工具
-
-| 工具 | 功能 | 示例 |
-|------|------|------|
-| `analyze_address` | 分析单个HL地址 | `analyze_address("0x...")` |
-| `compare_addresses` | 对比多个地址 | `compare_addresses(["0xA", "0xB"])` |
-| `scan_whales` | 扫描鲸鱼仓位 | `scan_whales(500000)` |
-
-### 🆕 地址监控工具
-
-| 工具 | 功能 | 示例 |
-|------|------|------|
-| `add_address_monitor` | 添加监控 | `add_address_monitor("0x...", options)` |
-| `get_monitor_list` | 监控列表 | `get_monitor_list()` |
-| `get_address_monitor_detail` | 监控详情 | `get_address_monitor_detail("0x...", "7d")` |
-| `pause_address_monitor` | 暂停监控 | `pause_address_monitor("0x...")` |
-| `resume_address_monitor` | 恢复监控 | `resume_address_monitor("0x...")` |
-| `remove_address_monitor` | 移除监控 | `remove_address_monitor("0x...")` |
-| `get_monitor_alerts` | 预警历史 | `get_monitor_alerts("0x...", "24h")` |
-| `export_monitor_data` | 导出数据 | `export_monitor_data("0x...", "csv")` |
-
-### 榜单工具
-
-| 工具 | 功能 | 示例 |
-|------|------|------|
-| `get_leaderboard` | 获取榜单 | `get_leaderboard("gravity", "all", 10)` |
-| `get_leaderboard_changes` | 榜单变化 | `get_leaderboard_changes("gravity", "1d")` |
-| `get_address_ranking` | 地址排名 | `get_address_ranking("0x...")` |
-
-### 平台跟单工具
-
-| 工具 | 功能 | 示例 |
-|------|------|------|
-| `connect_hypertrend_wallet` | 连接钱包 | `connect_hypertrend_wallet("0x...", "sig")` |
-| `get_platform_leaders` | 获取带单者 | `get_platform_leaders({min_gravity: 800})` |
-| `start_platform_copytrading` | 开始跟单 | `start_platform_copytrading("0x...", 5000)` |
-| `get_platform_copytrading_status` | 跟单状态 | `get_platform_copytrading_status()` |
-
-### 跟单工具
-
-| 工具 | 功能 | 示例 |
-|------|------|------|
-| `start_copytrading` | 启动自动跟单 | `start_copytrading("conservative")` |
-| `stop_copytrading` | 暂停跟单 | `stop_copytrading()` |
-| `emergency_stop` | 紧急止损 | `emergency_stop()` |
-| `get_copytrading_status` | 跟单状态 | `get_copytrading_status()` |
-
-## 🆕 监控类型
-
-| 监控 | 说明 | 通知内容 |
-|------|------|----------|
-| **仓位变化** | 加仓、减仓、调杠杆 | 变动详情、保证金变化 |
-| **交易操作** | 开仓、平仓、部分平仓 | 交易对、方向、盈亏 |
-| **资金变动** | 充值、提现、盈亏结算 | 金额、余额、类型 |
-| **盈利追踪** | 已实现/未实现盈亏 | 累计盈亏、日统计 |
-| **风险预警** | 爆仓风险、大额变动 | 风险等级、建议操作 |
-
-详细监控文档见 [ADDRESS_MONITORING.md](ADDRESS_MONITORING.md)
-
-## 🆕 榜单类型
-
-| 榜单 | 说明 | 周期 |
-|------|------|------|
-| **引力指数榜** | 六芒星综合评分排名 | 实时 |
-| **收益榜** | 按收益率/金额排名 | 24h/7d/30d |
-| **胜率榜** | 按交易胜率排名 | 7d/30d |
-| **带单榜** | 按带单收益排名 | 7d/30d |
-| **涨幅榜** | 按24h涨幅排名 | 实时 |
-| **新贵榜** | 新晋优质交易者 | 7d |
-
-详细榜单文档见 [LEADERBOARD.md](LEADERBOARD.md)
-
-## 🆕 跟单策略
-
-| 策略 | 引力指数 | 胜率 | 杠杆 | 风险等级 |
-|------|:--------:|:----:|:----:|:--------:|
-| **保守型** | ≥800 | ≥70% | ≤8x | 🟢 低 |
-| **平衡型** | ≥650 | ≥60% | ≤12x | 🟡 中 |
-| **激进型** | ≥500 | ≥55% | ≤20x | 🔴 高 |
-
-详细跟单文档见 [COPYTRADING.md](COPYTRADING.md)
-
-## 📊 六芒星信用模型
-
-| 维度 | 权重 | 满分 | 指标 |
-|------|:----:|:----:|------|
-| 风控能力 | 20% | 200 | 回撤、止损、仓位 |
-| 胜率矩阵 | 20% | 200 | 胜率、盈亏比、夏普 |
-| 杠杆艺术 | 15% | 150 | 杠杆效率、爆仓风险 |
-| 市场阶段 | 15% | 150 | 趋势判断、周期识别 |
-| 链上足迹 | 15% | 150 | 交易频次、Gas效率 |
-| 收益质量 | 15% | 150 | 收益稳定、资金来源 |
-
-**引力指数等级:**
-- ⭐⭐⭐⭐⭐ 950-1000: 大师级
-- ⭐⭐⭐⭐ 800-950: 精英级
-- ⭐⭐⭐ 600-800: 优秀级
-
-## 🎨 品牌规范
-
-- **六芒星**: 两个重叠等边三角形 (▲ + ▼)
-- **主色**: `#00D4FF` (青色)
-- **话题标签**: `#HyperTrend` `#OnChainCredit`
-
-## 📁 文件结构
-
-```
-hypertrend-analytics/
-├── SKILL.md                    # 本文件
-├── README.md                   # 项目说明
-├── COPYTRADING.md              # 自动跟单系统
-├── LEADERBOARD.md              # 榜单系统
-├── PLATFORM_COPYTRADING.md     # 平台跟单
-├── ADDRESS_MONITORING.md       # 🆕 地址监控
-├── CHANGELOG.md                # 版本日志
-├── CONTRIBUTING.md             # 贡献指南
-├── LICENSE                     # MIT许可证
-├── package.json               # 包信息 (v2.4.0)
-├── examples/                  # 使用示例
-│   ├── address-analysis.md
-│   └── whale-monitoring.md
-└── scripts/
-    └── install.sh
-```
-
-## 📝 更新日志
-
-### v2.4.0 (2026-03-11)
-- 🆕 新增地址实时监控系统
-- 🆕 支持仓位/交易/资金/盈利/风险监控
-- 🆕 支持自定义通知阈值
-- 🆕 支持监控数据导出
-
-### v2.3.0 (2026-03-11)
-- 🆕 新增 HyperTrend 平台跟单
-- 🆕 钱包签名认证
-
-### v2.2.0 (2026-03-10)
-- 🆕 新增榜单系统
-- 🆕 新增榜单变化追踪
-
-### v2.1.0 (2026-03-09)
-- 🆕 新增自动跟单系统
-- 🆕 新增风险控制
+- [x] v2.0.0: 基础跟单功能
+- [x] v2.1.0: 鲸鱼监控系统
+- [x] v2.2.0: 榜单系统 + 变化追踪
+- [x] v2.3.0: 平台跟单功能
+- [x] v2.4.0: 地址实时监控
+- [x] **v2.5.0: 智能风险偏好匹配** 🆕
+- [ ] v2.6.0: AI 策略分析
+- [ ] v2.7.0: 社交交易功能
 
 ## 🤝 贡献
 
@@ -505,15 +191,3 @@ hypertrend-analytics/
 ## 📄 许可证
 
 MIT License
-
-## 🔗 链接
-
-- 官网: https://www.hypertrend.top/
-- Twitter: https://x.com/gohypertrend
-- Telegram: https://t.me/HyperTrendHQ
-
----
-
-**⚠️ 风险提示:** 加密货币交易存在高风险，请只用可承受损失的资金。
-
-**Maintained by HyperTrend Team**
